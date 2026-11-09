@@ -6,8 +6,8 @@ RUN npm install
 COPY laundry-management-frontend/ ./
 RUN npm run build
 
-# --- Giai đoạn 2: Build Backend (.NET) ---
-FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build-backend
+# --- Giai đoạn 2: Build Backend (.NET 11) ---
+FROM mcr.microsoft.com/dotnet/sdk:11.0 AS build-backend
 WORKDIR /app
 COPY LaundryManagement.API/*.csproj ./
 RUN dotnet restore
@@ -15,11 +15,11 @@ COPY LaundryManagement.API/ ./
 RUN dotnet publish -c Release -o /out
 
 # --- Giai đoạn 3: Đóng gói chạy thật ---
-FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS runtime
+FROM mcr.microsoft.com/dotnet/aspnet:11.0 AS runtime
 WORKDIR /app
 COPY --from=build-backend /out .
 
-# Tự động copy kết quả build React vào thư mục wwwroot của .NET
+# Copy kết quả build React vào wwwroot của .NET
 COPY --from=build-frontend /app-frontend/dist /app/wwwroot
 
 EXPOSE 8080
