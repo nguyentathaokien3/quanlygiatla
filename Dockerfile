@@ -9,9 +9,16 @@ RUN npm run build
 # --- Giai đoạn 2: Build Backend (.NET 8) ---
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build-backend
 WORKDIR /app
-COPY LaundryManagement.API/*.csproj ./
+
+# Copy riêng file csproj trước để restore tối ưu cache
+COPY LaundryManagement.API/*.csproj ./LaundryManagement.API/
+WORKDIR /app/LaundryManagement.API
 RUN dotnet restore
-COPY LaundryManagement.API/ ./
+
+# Copy toàn bộ code backend còn lại và publish
+WORKDIR /app
+COPY LaundryManagement.API/ ./LaundryManagement.API/
+WORKDIR /app/LaundryManagement.API
 RUN dotnet publish -c Release -o /out
 
 # --- Giai đoạn 3: Đóng gói chạy thật ---
@@ -19,7 +26,7 @@ FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS runtime
 WORKDIR /app
 COPY --from=build-backend /out .
 
-# Copy kết quả build React vào wwwroot của .NET
+# Copy kết quả build React từ thư mục dist sang wwwroot của .NET
 COPY --from=build-frontend /app-frontend/dist /app/wwwroot
 
 EXPOSE 8080
