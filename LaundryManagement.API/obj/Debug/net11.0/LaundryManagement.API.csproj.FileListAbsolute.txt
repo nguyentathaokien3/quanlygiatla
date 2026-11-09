@@ -178,3 +178,4 @@ D:\backend_quanly_giatla\LaundryManagement.API\obj\Debug\net11.0\LaundryManageme
 D:\backend_quanly_giatla\LaundryManagement.API\obj\Debug\net11.0\ref\LaundryManagement.API.dll
 D:\backend_quanly_giatla\LaundryManagement.API\bin\Debug\net11.0\Scalar.AspNetCore.dll
 D:\backend_quanly_giatla\LaundryManagement.API\bin\Debug\net11.0\BCrypt-Net-Next.dll
+D:\backend_quanly_giatla\LaundryManagement.API\obj\Debug\net11.0\LaundryManagement.API.sourcelink.json
